@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeonWedgie | Premium Web3 Niche Content</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+    
+    <style>
+        /* CSS Design - Neon/Dark Sexy Aesthetic */
+        :root {
+            --neon-purple: #bc13fe; /* Mystery & Luxury */
+            --neon-pink: #ff1493;   /* Boldness & Energy */
+            --dark-bg: #0d0d0d;     /* Sophistication */
+            --glass-white: rgba(255, 255, 255, 0.05);
+            --transition-speed: 0.4s;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--dark-bg);
+            color: #fff;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background: radial-gradient(circle at top right, #1a0033, #0d0d0d);
+        }
+
+        /* Rule 1: Lighting from the sky - Header shadow */
+        header {
+            width: 100%;
+            padding: 30px 0;
+            text-align: center;
+            background: rgba(13, 13, 13, 0.9);
+            border-bottom: 2px solid var(--neon-purple);
+            box-shadow: 0 4px 20px rgba(188, 19, 254, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(15px);
+        }
+
+       .logo {
+            font-size: 3rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(255, 20, 147, 0.5));
+        }
+
+        /* Container & Rule 2: Double Whitespace */
+       .main-wrapper {
+            width: 90%;
+            max-width: 1100px;
+            margin: 80px auto;
+            text-align: center;
+        }
+
+        /* Video Stage */
+       .video-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            border-radius: 25px;
+            border: 3px solid var(--neon-purple);
+            box-shadow: 0 0 50px rgba(188, 19, 254, 0.2);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Gated Overlay with Glitch Vibe */
+       .paywall-overlay {
+            position: absolute;
+            z-index: 50;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            box-sizing: border-box;
+            backdrop-filter: blur(8px);
+        }
+
+       .paywall-overlay h2 {
+            font-size: 2.5rem;
+            color: var(--neon-pink);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            animation: glitch 3s infinite;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 2px 0 0 #ff00ff, -2px 0 0 #00ffff; }
+            2% { text-shadow: -2px 0 0 #ff00ff, 2px 0 0 #00ffff; }
+            4% { text-shadow: 2px 0 0 #ff00ff, -2px 0 0 #00ffff; }
+            100% { text-shadow: none; }
+        }
+
+       .price-tag {
+            font-size: 1.5rem;
+            color: #ccc;
+            margin-bottom: 40px;
+        }
+
+        /* Neon Pulse Button Effect */
+       .btn-pay {
+            padding: 20px 60px;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #fff;
+            text-transform: uppercase;
+            background: transparent;
+            border: 3px solid var(--neon-pink);
+            border-radius: 100px;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition-speed);
+            letter-spacing: 3px;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+       .btn-pay:hover {
+            background: var(--neon-pink);
+            box-shadow: 0 0 50px var(--neon-pink);
+            transform: scale(1.05);
+        }
+
+       .btn-pay::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: var(--neon-pink);
+            border-radius: 100px;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0;
+            animation: pulse-ring 2s infinite;
+            z-index: -1;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+            100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+        }
+
+       .status-update {
+            margin-top: 25px;
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--neon-purple);
+            font-size: 1rem;
+        }
+
+        /* Real Content - Hidden initially */
+        #media-portal {
+            display: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Compliance Footer */
+        footer {
+            width: 100%;
+            background: #050505;
+            padding: 60px 0;
+            border-top: 1px solid #1a1a1a;
+            color: #444;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+       .compliance-grid {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+       .takedown-link {
+            color: var(--neon-purple);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Loading Spinner */
+       .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--glass-white);
+            border-top: 4px solid var(--neon-pink);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">NeonWedgie</div>
+    </header>
+
+    <div class="main-wrapper">
+        <div class="video-container">
+            <div class="paywall-overlay" id="paywall">
+                <div class="spinner" id="load-spinner"></div>
+                <h2>Gated Exclusive</h2>
+                <p class="price-tag">Unlock Premium Hanging Wedgie Clip for <strong>0.005 ETH</strong></p>
+                <button class="btn-pay" id="main-btn" onclick="executePayment()">Unlock Now</button>
+                <div class="status-update" id="wallet-status">Connect MetaMask to Continue</div>
+            </div>
+
+            <div id="media-portal">
+                <video id="premium-video" controls poster="https://via.placeholder.com/1920x1080/0d0d0d/bc13fe?text=Buffering+Exclusive+Content...">
+                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                    Your browser does not support Web3 Video Playback.
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="compliance-grid">
+            <p><strong>RECIPIENT: 0x02f93c7547309ca50EEAB446DaEBE8ce8E694cBb</strong></p>
+            <p>&copy; 2026 NeonWedgie Entertainment. All actors 18+. Records kept under 18 U.S.C. 2257.</p>
+            <p>Complying with California AB 392 (2025). <a href="#" class="takedown-link">Submit Takedown Request</a> | <a href="#" class="takedown-link">Terms of Service</a></p>
+            <p>Cryptocurrency payments are non-refundable. Access is granted only after 1 block confirmation.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Production Configuration
+        const WALLET_ADDR = "0x02f93c7547309ca50EEAB446DaEBE8ce8E694cBb";
+        const PRICE_ETH = "0.005";
+
+        async function executePayment() {
+            const statusLabel = document.getElementById('wallet-status');
+            const btn = document.getElementById('main-btn');
+            const spinner = document.getElementById('load-spinner');
+
+            if (!window.ethereum) {
+                statusLabel.innerText = "Error: MetaMask Not Found!";
+                statusLabel.style.color = "red";
+                return;
+            }
+
+            try {
+                // Initialize Ethers v6 Provider
+                const provider = new ethers.BrowserProvider(window.ethereum);
+                
+                // Request Account
+                statusLabel.innerText = "Connecting Wallet...";
+                const signer = await provider.getSigner();
+                const address = await signer.getAddress();
+                
+                // Update UI
+                statusLabel.innerText = `Connected: ${address.slice(0,6)}...${address.slice(-4)}`;
+                spinner.style.display = "block";
+                btn.innerText = "Confirming...";
+
+                // Build Transaction
+                const txRequest = {
+                    to: WALLET_ADDR,
+                    value: ethers.parseEther(PRICE_ETH)
+                };
+
+                // Send Transaction
+                const txResponse = await signer.sendTransaction(txRequest);
+                statusLabel.innerText = "Transaction Broadcasted... Waiting for Mining...";
+                statusLabel.style.color = "var(--neon-pink)";
+
+                // Wait for Confirmations (1 Block)
+                const receipt = await txResponse.wait();
+
+                if (receipt.status === 1) {
+                    statusLabel.innerText = "Payment Successful! Unlocking Portal...";
+                    statusLabel.style.color = "#00ff85";
+                    spinner.style.display = "none";
+                    unlockPortal();
+                } else {
+                    throw new Error("Transaction Reverted on Ethereum Network.");
+                }
+
+            } catch (err) {
+                console.error(err);
+                statusLabel.innerText = "Failed: " + (err.reason |
+
+| err.message |
+| "User Denied Payment");
+                statusLabel.style.color = "red";
+                spinner.style.display = "none";
+                btn.innerText = "Unlock Now";
+            }
+        }
+
+        function unlockPortal() {
+            // Remove the paywall UI
+            const paywall = document.getElementById('paywall');
+            paywall.style.transition = "opacity 0.8s ease";
+            paywall.style.opacity = "0";
+            
+            setTimeout(() => {
+                paywall.style.display = 'none';
+                // Show and autoplay video
+                const portal = document.getElementById('media-portal');
+                portal.style.display = 'block';
+                const video = document.getElementById('premium-video');
+                video.play();
+                
+                // Add a welcome glow effect
+                document.querySelector('.video-container').style.boxShadow = "0 0 100px var(--neon-pink)";
+            }, 800);
+        }
+
+        // Check for existing connection on load
+        window.addEventListener('load', async () => {
+            if (window.ethereum) {
+                const provider = new ethers.BrowserProvider(window.ethereum);
+                const accounts = await provider.listAccounts();
+                if (accounts.length > 0) {
+                    const addr = await accounts.getAddress();
+                    document.getElementById('wallet-status').innerText = `Wallet Ready: ${addr.slice(0,6)}...`;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
