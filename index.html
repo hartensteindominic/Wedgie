@@ -11,28 +11,13 @@
 
     <style>
         :root { --neon-pink: #ff10f0; --neon-purple: #9d174d; --deep-black: #050505; }
-        body { 
-            background-color: var(--deep-black); 
-            color: #ffffff; 
-            font-family: 'Space Grotesk', sans-serif;
-            padding-bottom: env(safe-area-inset-bottom); /* iOS Home Indicator */
-        }
+        body { background-color: var(--deep-black); color: #ffffff; font-family: 'Space Grotesk', sans-serif; padding-bottom: env(safe-area-inset-bottom); }
       .neon-text { color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink); }
       .neon-border { border: 2px solid var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
       .btn-premium { background: linear-gradient(45deg, var(--neon-pink), var(--neon-purple)); }
-       
-       /* iPhone Optimized Modal */
-        #video-modal { 
-            display: none; 
-            backdrop-filter: blur(20px); 
-            background: rgba(0,0,0,0.95); 
-            padding-top: env(safe-area-inset-top);
-        }
-        
-       .hero-min-height { min-height: 100dvh; } /* Dynamic Viewport Height */
-
-        /* Touch targets must be at least 44px for iOS accessibility */
-       .touch-btn { min-height: 48px; min-width: 48px; display: flex; items-center; justify-center; }
+        #video-modal { display: none; backdrop-filter: blur(20px); background: rgba(0,0,0,0.95); padding-top: env(safe-area-inset-top); }
+      .hero-min-height { min-height: 100dvh; }
+      .touch-btn { min-height: 48px; min-width: 48px; display: flex; align-items: center; justify-content: center; }
     </style>
 </head>
 <body class="antialiased overflow-x-hidden">
@@ -40,40 +25,34 @@
     <nav class="fixed top-0 w-full z-50 p-4 md:p-6 flex justify-between items-center bg-black/80 backdrop-blur-md border-b border-white/10 pt-[env(safe-area-inset-top)]">
         <h1 class="text-xl md:text-3xl font-bold neon-text" style="font-family: 'Syncopate';">WEDGIE.VAULT</h1>
         <button id="connect-wallet" class="neon-border px-4 py-2 rounded-full text-[10px] font-bold hover:bg-pink-600 transition-all touch-btn uppercase">
-            CONNECT
+            CONNECT WALLET
         </button>
     </nav>
 
     <section class="hero-min-height flex flex-col items-center justify-center px-6 text-center pt-24">
         <div class="max-w-4xl">
             <h2 class="text-5xl md:text-8xl font-bold mb-4 italic leading-[0.9]">1 BILLION <br><span class="neon-text">Wedgies</span></h2>
-            <p class="text-sm md:text-xl text-gray-400 mb-8 max-w-sm mx-auto">Nerd-justice on the blockchain. <br class="hidden md:block"> Treasury: 0x02f9...cBb</p>
-            
+            <p class="text-sm md:text-xl text-gray-400 mb-8 max-w-sm mx-auto">Treasury: 0x02f9...cBb</p>
             <div class="flex flex-col md:flex-row gap-4 justify-center">
                 <button onclick="document.getElementById('archive-grid').scrollIntoView({behavior:'smooth'})" class="btn-premium px-12 py-5 rounded-md font-bold text-lg touch-btn">ENTER VAULT</button>
-                <button onclick="triggerNerdVoice('Welcome to the billion video database. Don\'t touch anything unless you have the crypto.')" class="border border-white/20 px-12 py-5 rounded-md font-bold text-lg touch-btn">TALK TO NERD</button>
             </div>
         </div>
     </section>
 
     <main id="archive-grid" class="max-w-7xl mx-auto py-12 px-4 md:px-6">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8" id="video-container">
-            </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8" id="video-container"></div>
     </main>
 
     <div id="video-modal" class="fixed inset-0 z- flex items-center justify-center p-0 md:p-6">
         <div class="absolute inset-0" onclick="closePlayer()"></div>
         <div class="relative w-full h-full md:h-auto md:max-w-4xl bg-zinc-900 rounded-none md:rounded-2xl overflow-hidden border-0 md:border md:border-white/20">
-            
             <button class="absolute top-4 right-4 z-50 text-3xl touch-btn bg-black/50 rounded-full" onclick="closePlayer()">&times;</button>
-
             <div class="aspect-video bg-black relative w-full h-full flex items-center justify-center">
                 <video id="player" class="w-full max-h-full" controls></video>
-                
                 <div id="payment-gate" class="absolute inset-0 bg-black/95 flex flex-col items-center justify-center text-center px-8">
                     <div class="w-16 h-16 md:w-20 md:h-20 mb-4 neon-border rounded-full flex items-center justify-center text-3xl">🔐</div>
                     <h4 class="text-2xl md:text-3xl font-bold mb-2 uppercase">Gated Content</h4>
-                    <p class="text-gray-400 text-xs md:text-sm mb-6 max-w-xs">Micropayment required: 0.001 ETH.</p>
+                    <p class="text-gray-400 text-xs md:text-sm mb-6 max-w-xs">Micropayment of 0.001 ETH required.</p>
                     <button id="pay-button" class="btn-premium w-full max-w-xs py-5 rounded-full text-lg font-bold shadow-lg">PAY TO UNLOCK</button>
                 </div>
             </div>
@@ -83,65 +62,56 @@
     <script>
         const TREASURY = "0x02f93c7547309ca50EEAB446DaEBE8ce8E694cBb";
         const ADMIN = "0x02f93c7547309ca50EEAB446DaEBE8ce8E694cBb";
-        const ELEVEN_LABS_KEY = ""; // Enter API Key
-        const VOICE_ID = "pNInz6obpgDQGcFmaJgB";
+        const ELEVEN_LABS_KEY = ""; 
+        const VOICE_ID = "pNInz6obpgDQGcFmaJgB"; // Enthusiastic Tech Geek
 
-        let provider, signer, userAddress;
+        let provider, signer, userAddress = null;
 
-        // Populate Mock Data
         function initGrid() {
             const container = document.getElementById('video-container');
             for(let i=1; i<=12; i++) {
                 const card = document.createElement('div');
                 card.className = "video-card bg-zinc-900 rounded-xl overflow-hidden border border-white/5";
                 card.onclick = openPlayer;
-                card.innerHTML = `
-                    <div class="aspect-video bg-zinc-800 flex items-center justify-center">
-                        <span class="text-pink-500 opacity-30">PREVIEW_${i}</span>
-                    </div>
-                    <div class="p-4"><h5 class="font-bold">Wedgie Archive Item #${i}</h5></div>
-                `;
+                card.innerHTML = `<div class="aspect-video bg-zinc-800 flex items-center justify-center"><span class="text-pink-500 opacity-30">PREVIEW_${i}</span></div><div class="p-4"><h5 class="font-bold">Wedgie Archive #${i}</h5></div>`;
                 container.appendChild(card);
             }
         }
 
-        async function initWallet() {
-            if (window.ethereum) {
-                window.ethereum.on('accountsChanged', (accounts) => accounts.length > 0? handleNewAccounts(accounts) : location.reload());
-                window.ethereum.on('chainChanged', () => location.reload());
-            }
-            initGrid();
-        }
-
         async function connect() {
-            if (!window.ethereum) return alert("Open in MetaMask Browser!");
+            if (!window.ethereum) return alert("Install MetaMask!");
             try {
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                handleNewAccounts(accounts);
-            } catch (err) { console.error(err); }
+                await handleNewAccounts(accounts);
+            } catch (err) { console.error("Login failed", err); }
         }
 
         async function handleNewAccounts(accounts) {
-            userAddress = accounts;
+            if (accounts.length === 0) return;
+            userAddress = accounts; // Fix: select the first account string
             provider = new ethers.BrowserProvider(window.ethereum);
             signer = await provider.getSigner();
+            
             const btn = document.getElementById('connect-wallet');
-            btn.innerText = userAddress.slice(0,4) + "..." + userAddress.slice(-4);
+            btn.innerText = userAddress.slice(0,6) + "..." + userAddress.slice(-4);
             btn.classList.add('bg-pink-600');
+
             if (userAddress.toLowerCase() === ADMIN.toLowerCase()) {
-                triggerNerdVoice("Admin access granted. All billion videos unlocked for you.");
+                triggerNerdVoice("Admin address recognized. Full access to the billion video database is now active.");
+            } else {
+                triggerNerdVoice("Connected. Now pay the 0.001 ETH fee if you actually want to watch.");
             }
         }
 
         async function triggerNerdVoice(text) {
-            if (!ELEVEN_LABS_KEY) return console.log("Nerd voice logic ready.");
+            if (!ELEVEN_LABS_KEY) return console.log("Nerd:", text);
             try {
-                const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+                const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'xi-api-key': ELEVEN_LABS_KEY },
                     body: JSON.stringify({ text, model_id: "eleven_monolingual_v2" })
                 });
-                const blob = await response.blob();
+                const blob = await res.blob();
                 new Audio(URL.createObjectURL(blob)).play();
             } catch (err) { console.error(err); }
         }
@@ -153,19 +123,23 @@
                 await tx.wait();
                 document.getElementById('payment-gate').style.display = 'none';
                 document.getElementById('player').play();
-                triggerNerdVoice("Payment confirmed. Enjoy the show.");
-            } catch (err) { triggerNerdVoice("Insufficient funds. Go earn some more crypto."); }
+                triggerNerdVoice("Transaction mined. You finally paid up. Enjoy.");
+            } catch (err) { triggerNerdVoice("Payment rejected. Are you broke?"); }
         }
 
         function openPlayer() {
             document.getElementById('video-modal').style.display = 'flex';
             const gate = document.getElementById('payment-gate');
+            const player = document.getElementById('player');
+            
+            // Fix: ensure check is case-insensitive and address is populated
             if (userAddress && userAddress.toLowerCase() === ADMIN.toLowerCase()) {
                 gate.style.display = 'none';
-                document.getElementById('player').play();
+                player.play().catch(e => console.log("Autoplay blocked"));
             } else {
                 gate.style.display = 'flex';
-                triggerNerdVoice("This video is locked. Micropayment of 0.001 ETH required.");
+                player.pause();
+                triggerNerdVoice("Locked! Pay the nerd-tax to see this one.");
             }
         }
 
@@ -176,7 +150,13 @@
 
         document.getElementById('connect-wallet').onclick = connect;
         document.getElementById('pay-button').onclick = handlePayment;
-        window.onload = initWallet;
+        window.onload = () => {
+            if (window.ethereum) {
+                window.ethereum.on('accountsChanged', handleNewAccounts);
+                window.ethereum.on('chainChanged', () => location.reload());
+            }
+            initGrid();
+        };
     </script>
 </body>
 </html>
