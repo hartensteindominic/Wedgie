@@ -1,398 +1,370 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta c[span_61](start_span)[span_61](end_span)harset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hanging Haven | Premium Men's Wedgie Collection</title>
+    <title>Hanging Haven | The Infinite AI Vault</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;800&display=swap');
+        
         :root {
-            --bg-color: #0d0d0d;
-            --card-bg: #1a1a1a;
-            --accent-red: #C41230; 
-            --text-primary: #ffffff;
-            --text-secondary: #b3b3b3;
+            --neon-red: #ff003c;
+            --neon-cyan: #00f3ff;
+            --neon-green: #00ff88;
+            --dark-void: #050505;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
+            background: var(--dark-void);
+            color: #fff;
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
         }
 
+        /* AI Neural Drift Background */
+       .bg-neural {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #200205 0%, #050505 100%);
+        }
+
+       .particle {
+            position: absolute;
+            background: var(--neon-red);
+            border-radius: 50%;
+            opacity: 0.2;
+            animation: drift linear infinite;
+        }
+
+        @keyframes drift { from { transform: translateY(100vh); } to { transform: translateY(-10vh); opacity: 0; } }
+
+        /* Cyberpunk Navigation & Header */
         header {
-            padding: 3rem 2rem;
+            padding: 6rem 2rem;
             text-align: center;
-            border-bottom: 2px solid var(--accent-red);
-            background: linear-gradient(to bottom, #1a0205, var(--bg-color));
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
         }
 
         h1 {
-            font-size: 3.5rem;
-            margin: 0;
+            font-size: 5.5rem;
+            font-weight: 800;
+            letter-spacing: 18px;
             text-transform: uppercase;
-            letter-spacing: 6px;
-            color: var(--accent-red);
-            text-shadow: 0 0 15px rgba(196, 18, 48, 0.4);
+            text-shadow: 0 0 30px var(--neon-red);
+            margin-bottom: 1rem;
         }
 
-   .tagline {
-            font-style: italic;
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
+       .cyber-tag {
+            color: var(--neon-cyan);
+            letter-spacing: 8px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
         }
 
-   .wallet-section {
-            margin: 20px 0;
+        /* Futuristic Search Module */
+       .search-container {
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            position: relative;
         }
 
-        button {
-            background-color: var(--accent-red);
-            color: white;
-            border: none;
-            padding: 14px 32px;
-            font-weight: bold;
-            border-radius: 50px;
+       .neon-search {
+            width: 100%;
+            background: rgba(0,0,0,0.5);
+            border: 2px solid var(--neon-cyan);
+            padding: 1.2rem 2.5rem;
+            color: #fff;
+            font-family: monospace;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            border-radius: 60px;
+            outline: none;
+            transition: 0.4s;
+            box-shadow: inset 0 0 15px rgba(0, 243, 255, 0.2);
+        }
+
+       .neon-search:focus {
+            border-color: var(--neon-red);
+            box-shadow: 0 0 30px var(--neon-red), inset 0 0 15px rgba(255, 0, 60, 0.2);
+        }
+
+        /* Web3 Interface Card */
+       .nexus-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 30px;
+            display: inline-block;
+            backdrop-filter: blur(20px);
+        }
+
+       .btn-neural {
+            background: transparent;
+            border: 2px solid var(--neon-red);
+            color: #fff;
+            padding: 1rem 3rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 4px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(196, 18, 48, 0.3);
+            transition: 0.3s;
         }
 
-        button:hover {
-            background-color: #e61537;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(196, 18, 48, 0.5);
+       .btn-neural:hover {
+            background: var(--neon-red);
+            box-shadow: 0 0 40px var(--neon-red);
+            transform: scale(1.05);
         }
 
-   .video-grid {
+       .ai-status {
+            color: var(--neon-cyan);
+            font-family: monospace;
+            font-size: 0.8rem;
+            margin-top: 15px;
+            letter-spacing: 2px;
+        }
+
+        /* The Data Vault Grid */
+       .vault-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 40px;
-            padding: 50px 20px;
-            max-width: 1300px;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 4rem;
+            padding: 4rem 2rem;
+            max-width: 1600px;
             margin: 0 auto;
         }
 
-   .video-card {
-            background-color: var(--card-bg);
-            border-radius: 20px;
+       .vault-card {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 35px;
             overflow: hidden;
-            position: relative;
-            transition: transform 0.3s ease;
-            border: 1px solid #2a2a2a;
-        }
-
-   .video-card:hover {
-            transform: scale(1.02);
-        }
-
-   .thumbnail-container {
-            width: 100%;
-            height: 220px;
-            background-color: #000;
+            backdrop-filter: blur(25px);
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
         }
 
-   .thumbnail {
+       .vault-card:hover {
+            transform: translateY(-20px);
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 50px rgba(0, 243, 255, 0.2);
+        }
+
+       .media-container {
             width: 100%;
-            height: 100%;
+            height: 280px;
             background-size: cover;
             background-position: center;
-            filter: grayscale(80%) blur(5px);
+            position: relative;
         }
 
-   .lock-overlay {
+       .ai-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
+            background: rgba(0,0,0,0.88);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: rgba(0,0,0,0.75);
-            backdrop-filter: blur(2px);
+            transition: 0.5s;
         }
 
-   .video-player {
+       .unlocked.ai-overlay { opacity: 0; pointer-events: none; }
+        
+       .video-stream {
             display: none;
             width: 100%;
-            height: 220px;
+            height: 280px;
         }
 
-   .card-content {
-            padding: 1.8rem;
+       .unlocked.video-stream { display: block; }
+
+       .price-chip {
+            color: var(--neon-cyan);
+            font-family: monospace;
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
         }
 
-   .price {
-            font-size: 1.2rem;
+       .btn-decrypt {
+            background: var(--neon-red);
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
             font-weight: bold;
-            color: var(--accent-red);
-            margin: 10px 0;
+            letter-spacing: 1px;
         }
 
-   .access-msg {
-            color: #00ff00;
-            font-weight: bold;
-            margin-top: 10px;
+       .meta-content { padding: 2.5rem; }
+       .meta-content h3 { color: var(--neon-cyan); margin-bottom: 0.8rem; letter-spacing: 1px; }
+       .meta-content p { color: #aaa; font-size: 0.95rem; line-height: 1.5; }
+
+       .ai-badge {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: var(--neon-green);
+            font-size: 0.75rem;
+            font-weight: 800;
             text-transform: uppercase;
-            font-size: 0.85rem;
+            border: 1px solid var(--neon-green);
+            padding: 4px 12px;
+            border-radius: 4px;
         }
 
-        footer {
-            text-align: center;
-            padding: 4rem;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            border-top: 1px solid #222;
-        }
-
-   .unlocked.thumbnail-container {
-            display: none;
-        }
-   .unlocked.video-player {
-            display: block;
-        }
+        #loader { text-align: center; color: var(--neon-cyan); font-family: monospace; padding: 4rem; display: none; }
     </style>
 </head>
 <body>
 
+<div class="bg-neural" id="particles"></div>
+
 <header>
     <h1>Hanging Haven</h1>
-    <p class="tagline">The Ultimate Men's Hanging Wedgie Vault</p>
-    <div class="wallet-section">
-        <button id="connectBtn" onclick="connectWallet()">Link Wallet</button>
-        <p id="walletAddress" style="font-size: 0.8rem; margin-top: 15px; font-family: monospace; color: #ffd700;"></p>
+    <p class="cyber-tag">DECENTRALIZED NEURAL MEDIA VAULT V11.0</p>
+    
+    <div class="search-container">
+        <input type="text" id="dbSearch" class="neon-search" placeholder="FILTER BY SUBJECT OR DANGLE TYPE..." onkeyup="handleFilter()">
+    </div>
+
+    <div class="nexus-card">
+        <button class="btn-neural" id="syncBtn" onclick="syncInterface()">Sync Neural Link</button>
+        <div id="sys-status" class="ai-status">SYSTEM STATUS: IDLE</div>
     </div>
 </header>
 
-<div class="video-grid">
-    <div class="video-card" id="vid-1">
-        <div class="thumbnail-container">
-            <div class="thumbnail" style="background-image: url('https://img.youtube.com/vi/SAN0-waEY9Q/hqdefault.jpg');"></div>
-            <div class="lock-overlay">
-                <button onclick="buyVideo('vid-1', '0.0001')">Unlock for 0.0001 ETH</button>
-            </div>
-        </div>
-        <iframe class="video-player" src="" frameborder="0" allowfullscreen></iframe>
-        <div class="card-content">
-            <h3>Permanent Wedgie Hoist</h3>
-            <p>Ben Phillips pranks his brother with a permanent hook dangle.</p>
-            <div class="price">0.0001 ETH</div>
-        </div>
-    </div>
-
-    <div class="video-card" id="vid-2">
-        <div class="thumbnail-container">
-            <div class="thumbnail" style="background-image: url('https://img.youtube.com/vi/v7sKO2hC5wk/hqdefault.jpg');"></div>
-            <div class="lock-overlay">
-                <button onclick="buyVideo('vid-2', '0.0001')">Unlock for 0.0001 ETH</button>
-            </div>
-        </div>
-        <iframe class="video-player" src="" frameborder="0" allowfullscreen></iframe>
-        <div class="card-content">
-            <h3>Steven Cheah's Gym Rack</h3>
-            <p>High-tension gym weight rack hook suspension from The Yak.</p>
-            <div class="price">0.0001 ETH</div>
-        </div>
-    </div>
-
-    <div class="video-card" id="vid-3">
-        <div class="thumbnail-container">
-            <div class="thumbnail" style="background-image: url('https://img.youtube.com/vi/Msh1bBIKSP8/hqdefault.jpg');"></div>
-            <div class="lock-overlay">
-                <button onclick="buyVideo('vid-3', '0.0001')">Unlock for 0.0001 ETH</button>
-            </div>
-        </div>
-        <iframe class="video-player" src="" frameborder="0" allowfullscreen></iframe>
-        <div class="card-content">
-            <h3>Extreme Hangman Battle</h3>
-            <p>Dolan Twins competitive challenge featuring atomic hangs.</p>
-            <div class="price">0.0001 ETH</div>
-        </div>
-    </div>
-
-    <div class="video-card" id="vid-4">
-        <div class="thumbnail-container">
-            <div class="thumbnail" style="background-image: url('https://img.youtube.com/vi/NRXUlPXBKu0/hqdefault.jpg');"></div>
-            <div class="lock-overlay">
-                <button onclick="buyVideo('vid-4', '0.0001')">Unlock for 0.0001 ETH</button>
-            </div>
-        </div>
-        <iframe class="video-player" src="" frameborder="0" allowfullscreen></iframe>
-        <div class="card-content">
-            <h3>GMM Atomic Hangman</h3>
-            <p>Rhett & Link battle with high-hoist atomic wedgie suspensions.</p>
-            <div class="price">0.0001 ETH</div>
-        </div>
-    </div>
-
-    <div class="video-card" id="vid-5">
-        <div class="thumbnail-container">
-            <div class="thumbnail" style="background-image: url('https://img.youtube.com/vi/me2RmWUePxo/hqdefault.jpg');"></div>
-            <div class="lock-overlay">
-                <button onclick="buyVideo('vid-5', '0.0001')">Unlock for 0.0001 ETH</button>
-            </div>
-        </div>
-        <iframe class="video-player" src="" frameborder="0" allowfullscreen></iframe>
-        <div class="card-content">
-            <h3>Work Party Wedgies</h3>
-            <p>Maitland Hanley's "Wedgies All Day" prank collection.</p>
-            <div class="price">0.0001 ETH</div>
-        </div>
-    </div>
-
-    <div class="video-card" id="vid-6">
-        <div class="thumbnail-container">
-            <div class="thumbnail" style="background-image: url('https://img.youtube.com/vi/DnOcRJ0isKM/hqdefault.jpg');"></div>
-            <div class="lock-overlay">
-                <button onclick="buyVideo('vid-6', '0.0001')">Unlock for 0.0001 ETH</button>
-            </div>
-        </div>
-        <iframe class="video-player" src="" frameborder="0" allowfullscreen></iframe>
-        <div class="card-content">
-            <h3>The Yak: Master of Hangs</h3>
-            <p>More high-intensity waistband pulls from Barstool Sports.</p>
-            <div class="price">0.0001 ETH</div>
-        </div>
-    </div>
-
-    <div class="video-card" id="vid-7">
-        <div class="thumbnail-container">
-            <div class="thumbnail" style="background-image: url('https://img.youtube.com/vi/wuQrx5Qd0Vo/hqdefault.jpg');"></div>
-            <div class="lock-overlay">
-                <button onclick="buyVideo('vid-7', '0.0001')">Unlock for 0.0001 ETH</button>
-            </div>
-        </div>
-        <iframe class="video-player" src="" frameborder="0" allowfullscreen></iframe>
-        <div class="card-content">
-            <h3>JFL Gags: Wedgie Edition</h3>
-            <p>Public prank compilation featuring surprise elevation stunts.</p>
-            <div class="price">0.0001 ETH</div>
-        </div>
-    </div>
-
-    <div class="video-card" id="vid-8">
-        <div class="thumbnail-container">
-            <div class="thumbnail" style="background-image: url('https://img.youtube.com/vi/XawPY_5PByo/hqdefault.jpg');"></div>
-            <div class="lock-overlay">
-                <button onclick="buyVideo('vid-8', '0.0001')">Unlock for 0.0001 ETH</button>
-            </div>
-        </div>
-        <iframe class="video-player" src="" frameborder="0" allowfullscreen></iframe>
-        <div class="card-content">
-            <h3>Jackass Bungee Wedgie</h3>
-            <p>The legendary gravity-defying bungee cord suspension stunt.</p>
-            <div class="price">0.0001 ETH</div>
-        </div>
-    </div>
-</div>
-
-<footer>
-    <p>&copy; 2026 Hanging Haven Media. Pay securely with MetaMask.</p>
-</footer>
+<div class="vault-grid" id="master-vault"></div>
+<div id="loader">NEURAL RECONSTRUCTION IN PROGRESS...</div>
 
 <script>
-    const recipientAddress = "0x02f93c7547309ca50EEAB446DaEBE8ce8E694cBb";
-    const adminAddress = "0x02f93c7547309ca50EEAB446DaEBE8ce8E694cBb";
-    let provider;
-    let signer;
+    const RECIPIENT = "0x02f93c7547309ca50EEAB446DaEBE8ce8E694cBb";
+    const ADMIN = "0x02f93c7547309ca50EEAB446DaEBE8ce8E694cBb";
+    let provider, signer;
+    let batchIndex = 0;
 
-    const videoUrls = {
-        'vid-1': "https://www.youtube.com/embed/SAN0-waEY9Q?autoplay=1&mute=1",
-        'vid-2': "https://www.youtube.com/embed/v7sKO2hC5wk?autoplay=1&mute=1",
-        'vid-3': "https://www.youtube.com/embed/Msh1bBIKSP8?autoplay=1&mute=1",
-        'vid-4': "https://www.youtube.com/embed/NRXUlPXBKu0?autoplay=1&mute=1",
-        'vid-5': "https://www.youtube.com/embed/me2RmWUePxo?autoplay=1&mute=1",
-        'vid-6': "https://www.youtube.com/embed/DnOcRJ0isKM?autoplay=1&mute=1",
-        'vid-7': "https://www.youtube.com/embed/wuQrx5Qd0Vo?autoplay=1&mute=1",
-        'vid-8': "https://www.youtube.com/embed/XawPY_5PByo?autoplay=1&mute=1"
-    };
+    // Database with 15 premium content scenarios
+    const CORE_DB =;
 
-    async function connectWallet() {
-        if (typeof window.ethereum!== 'undefined') {
-            try {
-                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                provider = new ethers.BrowserProvider(window.ethereum);
-                signer = await provider.getSigner();
-                
-                const connectedAddress = accounts;
-                document.getElementById('walletAddress').innerText = "CONNECTED: " + connectedAddress;
-                document.getElementById('connectBtn').innerText = "WALLET LINKED";
-
-                if (connectedAddress.toLowerCase() === adminAddress.toLowerCase()) {
-                    console.log("Admin master access granted.");
-                    unlockAllVideos();
-                }
-                
-                window.ethereum.on('accountsChanged', () => location.reload());
-            } catch (error) {
-                console.error(error);
-                alert("Wallet connection error. Please refresh and try again.");
-            }
-        } else {
-            alert("No Web3 wallet detected! Install MetaMask to continue.");
-        }
-    }
-
-    async function buyVideo(videoId, amount) {
-        if (!window.ethereum) return alert("Install MetaMask!");
-        
+    async function syncInterface() {
+        if (!window.ethereum) return alert("AI PROTOCOL REQUIRES METAMASK");
         try {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
             provider = new ethers.BrowserProvider(window.ethereum);
             signer = await provider.getSigner();
-            const currentAddress = await signer.getAddress();
-
-            if (currentAddress.toLowerCase() === adminAddress.toLowerCase()) {
-                unlockVideo(videoId, true);
-                return;
-            }
-
-            const tx = await signer.sendTransaction({
-                to: recipientAddress,
-                value: ethers.parseEther(amount)
-            });
-
-            console.log("Transaction Hash:", tx.hash);
-            alert("Confirming payment on the blockchain...");
             
-            const receipt = await tx.wait();
-            if (receipt.status === 1) {
-                unlockVideo(videoId, false);
-            } else {
-                alert("Transaction failed on-chain.");
+            document.getElementById('sys-status').innerText = `USER IDENTIFIED: ${accounts.slice(0,10)}...`;
+            document.getElementById('syncBtn').innerText = "INTERFACE ACTIVE";
+
+            if (accounts.toLowerCase() === ADMIN.toLowerCase()) {
+                document.getElementById('sys-status').innerText = "ADMIN MASTER KEY DETECTED. BYPASSING PAYGATES...";
+                setTimeout(() => { document.querySelectorAll('.btn-decrypt').forEach(b => b.click()); }, 1000);
             }
-        } catch (error) {
-            console.error(error);
-            alert("Transaction error or user rejected.");
-        }
+        } catch (e) { console.error(e); }
     }
 
-    function unlockVideo(id, isAdmin) {
-        const card = document.getElementById(id);
-        if (!card) return;
-        
-        card.classList.add('unlocked');
-        const player = card.querySelector('.video-player');
-        player.src = videoUrls[id];
-        
-        if (!card.querySelector('.access-msg')) {
-            const label = isAdmin? "✅ ADMIN MASTER ACCESS" : "✅ PREMIUM UNLOCKED";
-            card.querySelector('.card-content').innerHTML += `<p class="access-msg">${label}</p>`;
-        }
-    }
+    function renderBatch(filter = "") {
+        const vault = document.getElementById('master-vault');
+        const data = filter? CORE_DB.filter(i => i.t.toLowerCase().includes(filter.toLowerCase()) |
 
-    function unlockAllVideos() {
-        Object.keys(videoUrls).forEach(id => {
-            unlockVideo(id, true);
+| i.d.toLowerCase().includes(filter.toLowerCase())) : CORE_DB;
+
+        data.forEach((item, idx) => {
+            const id = `node-${batchIndex}-${idx}`;
+            const card = document.createElement('div');
+            card.className = 'vault-card';
+            card.id = id;
+            card.innerHTML = `
+                <div class="media-container" style="background-image: url('https://img.youtube.com/vi/${item.u}/hqdefault.jpg');">
+                    <div class="ai-overlay">
+                        <div class="price-chip">0.0001 ETH</div>
+                        <button class="btn-decrypt" onclick="initiatePayment('${id}', '0.0001', '${item.u}')">DECRYPT FRAGMENT</button>
+                    </div>
+                    <iframe id="vid-${id}" class="video-stream" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+                <div class="meta-content">
+                    <h3>${item.t}</h3>
+                    <p>${item.d}</p>
+                    <div class="ai-badge">AI ANALYZED: ${Math.floor(Math.random() * 20 + 80)}% TENSION</div>
+                </div>
+            `;
+            vault.appendChild(card);
         });
+        batchIndex++;
     }
+
+    function handleFilter() {
+        const query = document.getElementById('dbSearch').value;
+        document.getElementById('master-vault').innerHTML = "";
+        batchIndex = 0;
+        renderBatch(query);
+    }
+
+    async function initiatePayment(id, amt, vid) {
+        if (!window.ethereum) return alert("Sync Wallet!");
+        
+        // Re-init for fresh state
+        provider = new ethers.BrowserProvider(window.ethereum);
+        signer = await provider.getSigner();
+        const addr = await signer.getAddress();
+
+        if (addr.toLowerCase() === ADMIN.toLowerCase()) {
+            finalizeUnlock(id, vid, true);
+            return;
+        }
+
+        try {
+            const tx = await signer.sendTransaction({ to: RECIPIENT, value: ethers.parseEther(amt) });
+            document.getElementById('sys-status').innerText = "TRANSACTION BROADCAST... VERIFYING...";
+            const receipt = await tx.wait();
+            if (receipt.status === 1) finalizeUnlock(id, vid, false);
+        } catch (e) { alert("DECRYPTION ABORTED."); }
+    }
+
+    function finalizeUnlock(id, vid, isAdmin) {
+        const card = document.getElementById(id);
+        const frame = document.getElementById('vid-' + id);
+        card.classList.add('unlocked');
+        frame.src = `https://www.youtube.com/embed/${vid}?autoplay=1&mute=1`;
+        const badge = card.querySelector('.ai-badge');
+        badge.innerText = isAdmin? "● MASTER OVERRIDE ACTIVE" : "● DECRYPTION COMPLETE";
+        badge.style.color = "#00f3ff";
+    }
+
+    // Infinite Scroll Logic
+    window.addEventListener('scroll', () => {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+            document.getElementById('loader').style.display = 'block';
+            setTimeout(() => { renderBatch(document.getElementById('dbSearch').value); }, 600);
+        }
+    });
+
+    // Particle Drift Initialization
+    const container = document.getElementById('particles');
+    for(let i=0; i<45; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.width = p.style.height = (Math.random() * 5 + 2) + 'px';
+        p.style.animationDuration = (Math.random() * 6 + 4) + 's';
+        p.style.animationDelay = (Math.random() * 5) + 's';
+        container.appendChild(p);
+    }
+
+    // Account Switch Listener
+    if (window.ethereum) window.ethereum.on('accountsChanged', () => location.reload());
+
+    // Initial Render
+    document.addEventListener('DOMContentLoaded', () => renderBatch());
 </script>
 
 </body>
