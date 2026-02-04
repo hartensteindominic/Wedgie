@@ -3,260 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WedgieVerse: Elevated Nerdity 2026</title>
+    <title>Wedgie Vault - Billion Video Archive</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.ethers.io/lib/ethers-6.7.0.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+
     <style>
-        :root {
-            --bg-base: #F0EEE9;
-            --bg-dark: #070A0F;
-            --accent-geek: #B6FF3B;
-            --accent-sexy: #FF3BD4;
-            --font-main: 'Inter', system-ui, -apple-system, sans-serif;
-        }
-
-        body {
-            margin: 0;
-            background-color: var(--bg-base);
-            font-family: var(--font-main);
-            color: var(--bg-dark);
-            overflow-x: hidden;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 4rem;
-            background: var(--bg-dark);
-            color: white;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-        }
-
-       .logo { font-size: 2.2rem; font-weight: 900; letter-spacing: -1px; }
-       .logo span { color: var(--accent-sexy); text-transform: uppercase; }
-
-       .btn {
-            background: var(--accent-geek);
-            border: 2px solid var(--bg-dark);
-            padding: 0.8rem 2rem;
-            border-radius: 12px;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 6px 6px 0px var(--accent-sexy);
-            transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-       .btn:hover { transform: translate(3px, 3px); box-shadow: 2px 2px 0px var(--accent-sexy); }
-       .btn:active { transform: translate(6px, 6px); box-shadow: 0px 0px 0px; }
-
-        #hero {
-            padding: 6rem 4rem;
-            background: linear-gradient(135deg, var(--bg-base) 0%, #E7D8C6 100%);
-            text-align: center;
-            border-bottom: 2px solid var(--bg-dark);
-        }
-
-        #ai-caption {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--accent-sexy);
-            margin-top: 2rem;
-            min-height: 2em;
-        }
-
-       .grid-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2.5rem;
-            padding: 4rem;
-        }
-
-       .video-card {
-            background: white;
-            border: 2px solid var(--bg-dark);
-            border-radius: 16px;
-            overflow: hidden;
-            position: relative;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-       .video-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-       .video-card img { width: 100%; height: 240px; object-fit: cover; border-bottom: 2px solid var(--bg-dark); }
-
-       .badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: var(--bg-dark);
-            color: var(--accent-geek);
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-weight: 900;
-            font-size: 0.75rem;
-        }
-
-       .modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(7, 10, 15, 0.98);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.4s ease;
-        }
-
-       .modal.active { opacity: 1; pointer-events: all; }
-       .modal-content { width: 90%; max-width: 1000px; position: relative; }
-       .close-modal { position: absolute; top: -3rem; right: 0; color: white; font-size: 2rem; cursor: pointer; }
-
-        video { width: 100%; border: 4px solid var(--accent-geek); border-radius: 12px; box-shadow: 0 0 50px var(--accent-sexy); }
-        
-       .hidden { display: none; }
+        :root { --neon-pink: #ff10f0; --neon-purple: #9d174d; --deep-black: #050505; }
+        body { background-color: var(--deep-black); color: #ffffff; font-family: 'Space Grotesk', sans-serif; }
+       .neon-text { color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink); }
+       .neon-border { border: 2px solid var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
+       .video-card { background: rgba(20, 20, 20, 0.8); transition: 0.3s ease; cursor: pointer; border: 1px solid #333; }
+       .video-card:hover { transform: scale(1.05); border-color: var(--neon-pink); }
+       .btn-premium { background: linear-gradient(45deg, var(--neon-pink), var(--neon-purple)); }
+        #video-modal { display: none; backdrop-filter: blur(20px); background: rgba(0,0,0,0.95); }
     </style>
 </head>
-<body>
-    <header>
-        <div class="logo">WEDGIE<span>VERSE</span></div>
-        <div id="auth">
-            <button id="connectBtn" class="btn">CONNECT WALLET</button>
-            <div id="userInfo" class="hidden">
-                <span id="addrDisplay" style="font-weight: 800; color: var(--accent-geek);"></span>
-            </div>
-        </div>
-    </header>
+<body class="antialiased">
 
-    <section id="hero">
-        <h1 style="font-size: 4rem; font-weight: 900;">1,000,000,000 ELEVATIONS</h1>
-        <p style="font-size: 1.2rem; opacity: 0.8;">The world's largest repository of nerdy hanging wedgies. Curated by AI. Secured by ETH.</p>
-        <div id="ai-caption">Welcome, User. Please initialize your wallet for optimal wedgie trajectory.</div>
+    <nav class="fixed top-0 w-full z-50 p-6 flex justify-between items-center bg-black/80 backdrop-blur-md border-b border-white/10">
+        <h1 class="text-3xl font-bold neon-text" style="font-family: 'Syncopate';">WEDGIE.VAULT</h1>
+        <button id="connect-wallet" class="neon-border px-8 py-2 rounded-full text-xs font-bold hover:bg-pink-600 transition-all">
+            CONNECT WALLET
+        </button>
+    </nav>
+
+    <section class="pt-40 pb-20 px-6 text-center">
+        <h2 class="text-6xl md:text-8xl font-bold mb-6 italic leading-none">1 BILLION <br><span class="neon-text">Hanging Wedgies</span></h2>
+        <p class="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">High-fidelity nerd-justice on the blockchain. Treasury: 0x02f9...cBb</p>
+        <button onclick="document.getElementById('archive-grid').scrollIntoView({behavior:'smooth'})" class="btn-premium px-12 py-4 rounded-md font-bold text-lg">ENTER VAULT</button>
     </section>
 
-    <main id="videoGrid" class="grid-gallery"></main>
+    <main id="archive-grid" class="max-w-7xl mx-auto py-20 px-6">
+        <div id="video-container" class="grid grid-cols-1 md:grid-cols-3 gap-8"></div>
+    </main>
 
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" id="closeModal">&times;</span>
-            <div id="playerContainer"></div>
-            <div id="txStatus" style="color: white; margin-top: 1rem; font-weight: bold;"></div>
+    <div id="video-modal" class="fixed inset-0 z- flex items-center justify-center p-6">
+        <div class="absolute inset-0" onclick="closePlayer()"></div>
+        <div class="relative w-full max-w-4xl bg-zinc-900 rounded-2xl overflow-hidden border border-white/20">
+            <div class="aspect-video bg-black relative">
+                <video id="player" class="w-full h-full" controls></video>
+                <div id="payment-gate" class="absolute inset-0 bg-black/95 flex flex-col items-center justify-center text-center p-8">
+                    <h4 class="text-3xl font-bold mb-4">Content Locked</h4>
+                    <button id="pay-button" class="btn-premium px-12 py-5 rounded-full text-xl font-bold">PAY 0.001 ETH TO VIEW</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <footer style="padding: 4rem; background: var(--bg-dark); color: white; text-align: center;">
-        <p>&copy; 2026 WedgieVerse. 18 U.S.C. 2257 Record-Keeping Compliance Statement.</p>
-    </footer>
+    <script>
+        const TREASURY = "0x02f93c7547309ca50EEAB446DaEBE8ce8E694cBb";
+        const ADMIN = "0x02f93c7547309ca50EEAB446DaEBE8ce8E694cBb";
+        const ELEVEN_LABS_KEY = ""; // Enter your API Key here
+        const VOICE_ID = "pNInz6obpgDQGcFmaJgB"; // Enthusiastic Tech Geek
 
-    <script type="module">
-        import { ethers } from "https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.min.js";
+        let provider, signer, userAddress;
 
-        const ADMIN_WALLET = "0x02f93c7547309ca50EEAB446DaEBE8ce8E694cBb";
-        const WATCH_PRICE = "0.005"; // ETH price
-        
-        const videoData =;
+        async function initWallet() {
+            if (window.ethereum) {
+                // Listen for account changes
+                window.ethereum.on('accountsChanged', (accounts) => {
+                    if (accounts.length > 0) {
+                        handleNewAccounts(accounts);
+                    } else {
+                        location.reload();
+                    }
+                });
 
-        let provider, signer, currentAccount;
-
-        async function init() {
-            renderGrid();
-            document.getElementById('connectBtn').onclick = connect;
-            document.getElementById('closeModal').onclick = () => {
-                document.getElementById('modal').classList.remove('active');
-                document.getElementById('playerContainer').innerHTML = '';
-            };
+                // Listen for chain changes
+                window.ethereum.on('chainChanged', () => location.reload());
+            }
         }
 
         async function connect() {
-            if (!window.ethereum) return speak("Error! Provider not detected. Are you using a toaster?");
-            
+            if (!window.ethereum) return alert("Install MetaMask!");
             try {
-                provider = new ethers.BrowserProvider(window.ethereum);
-                const accounts = await provider.send("eth_requestAccounts",);
-                signer = await provider.getSigner();
-                currentAccount = accounts;
-
-                document.getElementById('userInfo').classList.remove('hidden');
-                document.getElementById('connectBtn').classList.add('hidden');
-                document.getElementById('addrDisplay').innerText = `${currentAccount.substring(0,6)}...${currentAccount.substring(38)}`;
-                
-                speak(`Affirmative! Wallet ${currentAccount.substring(0,4)} synced. Elevation sequence engaged.`);
-                renderGrid(); // Refresh to show free status for admin
+                // Fixed syntax: added empty array for parameters
+                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                handleNewAccounts(accounts);
             } catch (err) {
-                speak("Connection refused. My social anxiety is spiking.");
+                console.error("Connection failed", err);
             }
         }
 
-        function speak(text) {
-            document.getElementById('ai-caption').innerText = text;
-            const synth = window.speechSynthesis;
-            const utter = new SpeechSynthesisUtterance(text);
-            // Simulate the ElevenLabs 'Enthusiastic Tech Geek' Profile
-            utter.pitch = 1.6; 
-            utter.rate = 1.2;
-            synth.speak(utter);
-        }
-
-        function renderGrid() {
-            const grid = document.getElementById('videoGrid');
-            const isAdmin = currentAccount?.toLowerCase() === ADMIN_WALLET.toLowerCase();
+        async function handleNewAccounts(accounts) {
+            userAddress = accounts;
+            provider = new ethers.BrowserProvider(window.ethereum);
+            signer = await provider.getSigner();
             
-            grid.innerHTML = videoData.map(v => `
-                <div class="video-card" onclick="handlePlay('${v.url}', ${v.id})">
-                    <span class="badge">${isAdmin? 'ADMIN UNLOCKED' : '0.005 ETH'}</span>
-                    <img src="${v.thumb}" alt="${v.title}">
-                    <div style="padding: 1.5rem;">
-                        <h3 style="margin: 0; font-weight: 900;">${v.title}</h3>
-                    </div>
-                </div>
-            `).join('');
+            const btn = document.getElementById('connect-wallet');
+            btn.innerText = userAddress.slice(0,6) + "..." + userAddress.slice(-4);
+            btn.classList.add('bg-pink-600');
+
+            if (userAddress.toLowerCase() === ADMIN.toLowerCase()) {
+                triggerNerdVoice("Master address detected. Accessing the billion-video array. No fees for you.");
+            }
         }
 
-        async function handlePlay(url, id) {
-            if (!currentAccount) {
-                speak("Halt! Access denied. Connect your cryptographic signature first.");
-                return;
-            }
-
-            const modal = document.getElementById('modal');
-            const status = document.getElementById('txStatus');
-            const container = document.getElementById('playerContainer');
-
-            if (currentAccount.toLowerCase() === ADMIN_WALLET.toLowerCase()) {
-                speak("Welcome back, Master Architect. Your access is unrestricted.");
-                launchVideo(url);
-                return;
-            }
-
+        async function triggerNerdVoice(text) {
+            if (!ELEVEN_LABS_KEY) return console.log("Nerd says:", text);
             try {
-                speak("Transaction initiated. Calculating network gas... please hold your underwear.");
-                const tx = await signer.sendTransaction({
-                    to: ADMIN_WALLET,
-                    value: ethers.parseEther(WATCH_PRICE)
+                const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'xi-api-key': ELEVEN_LABS_KEY },
+                    body: JSON.stringify({ text, model_id: "eleven_monolingual_v2" })
                 });
+                const blob = await response.blob();
+                new Audio(URL.createObjectURL(blob)).play();
+            } catch (err) { console.error(err); }
+        }
 
-                modal.classList.add('active');
-                status.innerText = "MINING BLOCK... PLEASE WAIT...";
-                
-                const receipt = await tx.wait();
-                status.innerText = `SUCCESS! MINED IN BLOCK ${receipt.blockNumber}`;
-                speak("Transaction confirmed! Enjoy the nerd-grade elevation.");
-                launchVideo(url);
+        async function handlePayment() {
+            if (!userAddress) await connect();
+            try {
+                const tx = await signer.sendTransaction({
+                    to: TREASURY,
+                    value: ethers.parseEther("0.001")
+                });
+                await tx.wait(); // Wait for mining
+                document.getElementById('payment-gate').style.display = 'none';
+                document.getElementById('player').play();
+                triggerNerdVoice("Transaction mined. Enjoy the wedgie.");
             } catch (err) {
-                speak("Transaction aborted. Did your allowance run out?");
+                triggerNerdVoice("Payment failed. Are you a broke nerd? Sign the transaction!");
             }
         }
 
-        function launchVideo(url) {
-            document.getElementById('modal').classList.add('active');
-            document.getElementById('playerContainer').innerHTML = `
-                <video id="vPlayer" controls autoplay>
-                    <source src="${url}" type="video/mp4">
-                </video>
-            `;
+        function openPlayer(video) {
+            const modal = document.getElementById('video-modal');
+            const gate = document.getElementById('payment-gate');
+            modal.style.display = 'flex';
+            
+            if (userAddress && userAddress.toLowerCase() === ADMIN.toLowerCase()) {
+                gate.style.display = 'none';
+                document.getElementById('player').play();
+            } else {
+                gate.style.display = 'flex';
+                triggerNerdVoice("This archive is gated. 0.001 ETH, pay up!");
+            }
         }
 
-        init();
+        function closePlayer() {
+            document.getElementById('video-modal').style.display = 'none';
+            document.getElementById('player').pause();
+        }
+
+        document.getElementById('connect-wallet').onclick = connect;
+        document.getElementById('pay-button').onclick = handlePayment;
+        window.onload = initWallet;
     </script>
 </body>
 </html>
