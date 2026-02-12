@@ -1,187 +1,387 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hanging Wedgie Paradise - Sexy & Fun Wedgie Videos</title>
-    <style>
-        body {
-            background-color: #ff69b4; /* Hot pink for fun and sexy vibe */
-            color: #fff;
-            font-family: 'Comic Sans MS', cursive, sans-serif; /* Playful font */
-            text-align: center;
-            padding: 20px;
-        }
-        h1 {
-            font-size: 3em;
-            text-shadow: 2px 2px 4px #000;
-            animation: bounce 2s infinite;
-        }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-30px); }
-            60% { transform: translateY(-15px); }
-        }
-        button {
-            background-color: #ff1493;
-            color: #fff;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.5em;
-            cursor: pointer;
-            border-radius: 10px;
-            margin: 10px;
-            transition: transform 0.2s;
-        }
-        button:hover {
-            transform: scale(1.1);
-        }
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .video-item {
-            background-color: #fff;
-            color: #000;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-        video {
-            width: 100%;
-            height: auto;
-            display: none; /* Hidden until unlocked */
-        }
-        .play-btn {
-            background-color: #00ff00;
-            color: #000;
-        }
-        #status {
-            font-size: 1.2em;
-            margin: 10px;
-        }
-        .nerd-voice {
-            display: none; /* Hidden element for voice trigger */
-        }
-    </style>
-    <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="text/javascript"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wedgie Escape</title>
+  <style>
+    :root {
+      --bg: #121426;
+      --panel: #1d2140;
+      --accent: #ff4fa3;
+      --accent-2: #6cf0ff;
+      --text: #f4f6ff;
+      --danger: #ff6b6b;
+      --good: #68f29a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #212850, var(--bg));
+      color: var(--text);
+      padding: 24px;
+    }
+
+    .game-shell {
+      width: min(920px, 100%);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+    }
+
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--panel);
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+    }
+
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .stat {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      font-size: 0.95rem;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 20px;
+      background: rgba(0, 0, 0, 0.18);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.9rem;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      color: #111;
+      background: linear-gradient(120deg, var(--accent-2), var(--accent));
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        #131936;
+      background-size: 28px 28px, 28px 28px, auto;
+    }
+
+    .footer {
+      padding: 12px 20px 18px;
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .hint {
+      color: var(--accent-2);
+      font-weight: 700;
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome to Hanging Wedgie Paradise! 😘🍑</h1>
-    <p>Get ready for the sexiest, funniest hanging wedgie videos that'll make you squirm with delight! Pay with crypto to unlock the fun – or if you're the boss, it's all free!</p>
-    <p>We've got a whopping 1,000,000,000 videos (okay, we're showing a fun sample here, but imagine the endless scroll!)</p>
-    
-    <button id="connectWallet">Connect Wallet</button>
-    <p id="status">Status: Not connected</p>
-    
-    <div class="video-grid" id="videoGrid"></div>
-    
-    <div class="nerd-voice" id="nerdVoice">Oh no, my underwear is riding up! Help, I'm such a nerd getting a massive hanging wedgie! Hehe, feels kinda tingly though... Want to see more?</div>
-    
-    <script>
-        const adminWallet = '0x02f93c7547309ca50EEAB446DaEBE8ce8E694cBb'.toLowerCase();
-        let provider;
-        let signer;
-        let userAddress;
-        let isAdmin = false;
-        let isPaid = false;
-        
-        // Nerdy AI Voice Setup
-        function speakNerdy(text) {
-            if ('speechSynthesis' in window) {
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.pitch = 1.5; // High pitch for nerdy feel
-                utterance.rate = 1.2; // A bit fast and excited
-                utterance.volume = 1;
-                speechSynthesis.speak(utterance);
-            }
+  <section class="game-shell">
+    <div class="topbar">
+      <div class="title">🩲 Wedgie Escape</div>
+      <div class="stats">
+        <div class="stat">Score: <strong id="score">0</strong></div>
+        <div class="stat">Lives: <strong id="lives">3</strong></div>
+        <div class="stat">Level: <strong id="level">1</strong></div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="startBtn">Start / Restart</button>
+      <span>Move with <span class="hint">← →</span> or <span class="hint">A D</span>. Catch ⭐ snacks, dodge 🩲 wedgies.</span>
+    </div>
+
+    <canvas id="game" width="900" height="520" aria-label="Wedgie Escape game area"></canvas>
+
+    <div class="footer" id="status">Press <strong>Start</strong> to begin your escape run!</div>
+  </section>
+
+  <script>
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+
+    const scoreEl = document.getElementById('score');
+    const livesEl = document.getElementById('lives');
+    const levelEl = document.getElementById('level');
+    const statusEl = document.getElementById('status');
+    const startBtn = document.getElementById('startBtn');
+
+    const state = {
+      running: false,
+      score: 0,
+      lives: 3,
+      level: 1,
+      time: 0,
+      keys: new Set(),
+      player: { x: canvas.width / 2 - 25, y: canvas.height - 70, w: 50, h: 40, speed: 420 },
+      hazards: [],
+      pickups: [],
+      hazardSpawnTimer: 0,
+      pickupSpawnTimer: 0,
+      levelTimer: 0,
+      lastFrame: 0
+    };
+
+    function resetGame() {
+      state.running = true;
+      state.score = 0;
+      state.lives = 3;
+      state.level = 1;
+      state.time = 0;
+      state.keys.clear();
+      state.player.x = canvas.width / 2 - state.player.w / 2;
+      state.hazards = [];
+      state.pickups = [];
+      state.hazardSpawnTimer = 0;
+      state.pickupSpawnTimer = 0;
+      state.levelTimer = 0;
+      state.lastFrame = performance.now();
+      updateUI();
+      statusEl.textContent = 'Run! Keep your cool and avoid airborne wedgies!';
+      requestAnimationFrame(gameLoop);
+    }
+
+    function updateUI() {
+      scoreEl.textContent = state.score;
+      livesEl.textContent = state.lives;
+      levelEl.textContent = state.level;
+    }
+
+    function randomX(width) {
+      return Math.random() * (canvas.width - width);
+    }
+
+    function spawnHazard() {
+      const size = 34 + Math.random() * 24;
+      state.hazards.push({
+        x: randomX(size),
+        y: -size,
+        w: size,
+        h: size,
+        speed: 130 + state.level * 38 + Math.random() * 90,
+        rotation: Math.random() * Math.PI * 2,
+        spin: (Math.random() - 0.5) * 2.4
+      });
+    }
+
+    function spawnPickup() {
+      const size = 22;
+      state.pickups.push({
+        x: randomX(size),
+        y: -size,
+        w: size,
+        h: size,
+        speed: 140 + Math.random() * 65,
+        bob: Math.random() * Math.PI * 2
+      });
+    }
+
+    function rectOverlap(a, b) {
+      return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+    }
+
+    function drawPlayer() {
+      const p = state.player;
+      ctx.save();
+      ctx.translate(p.x + p.w / 2, p.y + p.h / 2);
+      ctx.fillStyle = '#ffe9c9';
+      ctx.fillRect(-18, -12, 36, 26);
+      ctx.beginPath();
+      ctx.arc(0, -26, 14, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#25203f';
+      ctx.fillRect(-20, 10, 40, 18);
+      ctx.fillStyle = '#6cf0ff';
+      ctx.fillRect(-18, 10, 36, 10);
+      ctx.restore();
+    }
+
+    function drawHazard(h) {
+      ctx.save();
+      ctx.translate(h.x + h.w / 2, h.y + h.h / 2);
+      ctx.rotate(h.rotation);
+      ctx.font = `${Math.floor(h.w)}px serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🩲', 0, 0);
+      ctx.restore();
+    }
+
+    function drawPickup(p) {
+      ctx.save();
+      ctx.translate(p.x + p.w / 2, p.y + p.h / 2 + Math.sin(p.bob) * 4);
+      ctx.font = `${Math.floor(p.w)}px serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('⭐', 0, 0);
+      ctx.restore();
+    }
+
+    function drawHud() {
+      if (!state.running && state.lives <= 0) {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.55)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#fff';
+        ctx.textAlign = 'center';
+        ctx.font = 'bold 52px Trebuchet MS';
+        ctx.fillText('Game Over!', canvas.width / 2, canvas.height / 2 - 20);
+        ctx.font = '28px Trebuchet MS';
+        ctx.fillText(`Final Score: ${state.score}`, canvas.width / 2, canvas.height / 2 + 28);
+      }
+    }
+
+    function update(dt) {
+      const p = state.player;
+      if (state.keys.has('ArrowLeft') || state.keys.has('a') || state.keys.has('A')) {
+        p.x -= p.speed * dt;
+      }
+      if (state.keys.has('ArrowRight') || state.keys.has('d') || state.keys.has('D')) {
+        p.x += p.speed * dt;
+      }
+      p.x = Math.max(0, Math.min(canvas.width - p.w, p.x));
+
+      state.hazardSpawnTimer += dt;
+      state.pickupSpawnTimer += dt;
+      state.levelTimer += dt;
+
+      const hazardInterval = Math.max(0.18, 0.9 - state.level * 0.06);
+      const pickupInterval = 1.2;
+
+      if (state.hazardSpawnTimer > hazardInterval) {
+        spawnHazard();
+        state.hazardSpawnTimer = 0;
+      }
+
+      if (state.pickupSpawnTimer > pickupInterval) {
+        spawnPickup();
+        state.pickupSpawnTimer = 0;
+      }
+
+      for (const h of state.hazards) {
+        h.y += h.speed * dt;
+        h.rotation += h.spin * dt;
+      }
+
+      for (const item of state.pickups) {
+        item.y += item.speed * dt;
+        item.bob += 5 * dt;
+      }
+
+      state.hazards = state.hazards.filter((h) => {
+        if (rectOverlap(state.player, h)) {
+          state.lives -= 1;
+          updateUI();
+          statusEl.textContent = state.lives > 0
+            ? 'Ouch! That one got you. Keep moving!'
+            : 'Wedgie wipeout! Tap Start to try again.';
+          return false;
         }
-        
-        // Connect Wallet
-        document.getElementById('connectWallet').addEventListener('click', async () => {
-            if (window.ethereum) {
-                provider = new ethers.providers.Web3Provider(window.ethereum);
-                try {
-                    await provider.send("eth_requestAccounts", []);
-                    signer = provider.getSigner();
-                    userAddress = (await signer.getAddress()).toLowerCase();
-                    document.getElementById('status').textContent = `Connected: ${userAddress}`;
-                    
-                    if (userAddress === adminWallet) {
-                        isAdmin = true;
-                        unlockVideos();
-                        speakNerdy("Welcome back, boss nerd! Free wedgies for you!");
-                    } else {
-                        document.getElementById('connectWallet').textContent = 'Pay to Unlock (0.01 ETH)';
-                        document.getElementById('connectWallet').id = 'payButton';
-                        document.getElementById('payButton').addEventListener('click', payToUnlock);
-                        speakNerdy("Connect your wallet, you little nerd! Time to pay for some hanging fun!");
-                    }
-                } catch (error) {
-                    document.getElementById('status').textContent = 'Connection failed: ' + error.message;
-                }
-            } else {
-                document.getElementById('status').textContent = 'Please install MetaMask!';
-            }
-        });
-        
-        // Pay to Unlock
-        async function payToUnlock() {
-            try {
-                const tx = await signer.sendTransaction({
-                    to: adminWallet,
-                    value: ethers.utils.parseEther('0.01') // 0.01 ETH fee
-                });
-                await tx.wait();
-                isPaid = true;
-                unlockVideos();
-                speakNerdy("Payment received! Now enjoy your hanging wedgie extravaganza, you sexy nerd!");
-            } catch (error) {
-                document.getElementById('status').textContent = 'Payment failed: ' + error.message;
-            }
+        return h.y < canvas.height + h.h;
+      });
+
+      state.pickups = state.pickups.filter((item) => {
+        if (rectOverlap(state.player, item)) {
+          state.score += 15;
+          updateUI();
+          return false;
         }
-        
-        // Unlock and Show Videos
-        function unlockVideos() {
-            const grid = document.getElementById('videoGrid');
-            grid.innerHTML = ''; // Clear if needed
-            
-            // Simulate a billion videos with a sample of 10 fun placeholders
-            // In reality, this could be paginated or infinite scroll, but here's a sexy fun list
-            for (let i = 1; i <= 10; i++) { // Representing the first 10 of 1,000,000,000
-                const videoItem = document.createElement('div');
-                videoItem.className = 'video-item';
-                
-                const title = document.createElement('h3');
-                title.textContent = `Sexy Hanging Wedgie Video #${i} (of 1,000,000,000) 🍑🔥`;
-                videoItem.appendChild(title);
-                
-                const video = document.createElement('video');
-                video.controls = true;
-                video.style.display = 'block'; // Show now that unlocked
-                
-                // Placeholder video source (use a real video URL or local file in production; here a free sample loop)
-                // For demo, using a public domain video placeholder (e.g., a fun animation or stock)
-                video.src = 'https://www.w3schools.com/html/mov_bbb.mp4'; // Dummy bunny video as placeholder; replace with actual wedgie content
-                
-                video.addEventListener('play', () => {
-                    speakNerdy(`Playing video ${i}! Oh gosh, that wedgie is hanging high! Feels so nerdy and hot!`);
-                });
-                
-                videoItem.appendChild(video);
-                grid.appendChild(videoItem);
-            }
-            
-            document.getElementById('status').textContent = isAdmin ? 'Admin Access: All Free!' : 'Paid Access: Enjoy!';
-        }
-        
-        // Initial Nerdy Welcome
-        window.onload = () => {
-            speakNerdy(document.getElementById('nerdVoice').textContent);
-        };
-    </script>
+        return item.y < canvas.height + item.h;
+      });
+
+      state.score += dt * 4;
+
+      if (state.levelTimer > 12) {
+        state.level += 1;
+        state.levelTimer = 0;
+        statusEl.textContent = `Level ${state.level}! Things are getting chaotic.`;
+        updateUI();
+      }
+
+      if (state.lives <= 0) {
+        state.running = false;
+      }
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (const h of state.hazards) {
+        drawHazard(h);
+      }
+      for (const item of state.pickups) {
+        drawPickup(item);
+      }
+      drawPlayer();
+      drawHud();
+    }
+
+    function gameLoop(now) {
+      const dt = Math.min((now - state.lastFrame) / 1000, 0.033);
+      state.lastFrame = now;
+
+      if (state.running) {
+        update(dt);
+        render();
+        requestAnimationFrame(gameLoop);
+      } else {
+        render();
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      state.keys.add(e.key);
+    });
+
+    window.addEventListener('keyup', (e) => {
+      state.keys.delete(e.key);
+    });
+
+    startBtn.addEventListener('click', resetGame);
+
+    render();
+  </script>
 </body>
 </html>
-```textContent
