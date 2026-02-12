@@ -16,6 +16,7 @@
       --muted: #b0bdd9;
       --ok: #6ef8a5;
       --warn: #ffd36f;
+      --danger: #ff7f95;
     }
 
     * { box-sizing: border-box; }
@@ -154,6 +155,10 @@
       margin-top: 10px;
     }
 
+    .row.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
     button {
       margin-top: 14px;
       border: none;
@@ -165,15 +170,24 @@
       cursor: pointer;
     }
 
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
     .note {
       margin-top: 10px;
       font-size: 0.9rem;
       color: var(--muted);
     }
 
+    .note.ok { color: var(--ok); }
+    .note.warn { color: var(--warn); }
+    .note.error { color: var(--danger); }
+
     .gallery {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(1, minmax(0, 1fr));
       gap: 10px;
       margin-top: 10px;
     }
@@ -187,9 +201,17 @@
 
     .thumb {
       aspect-ratio: 16 / 9;
+      width: 100%;
+      object-fit: cover;
+      display: block;
+      background: linear-gradient(150deg, #273383, #832f73);
+    }
+
+    .thumb-placeholder {
+      aspect-ratio: 16 / 9;
       display: grid;
       place-items: center;
-      font-size: 2.2rem;
+      font-size: 2rem;
       background: linear-gradient(150deg, #273383, #832f73);
     }
 
@@ -219,10 +241,15 @@
       font-size: 0.92rem;
     }
 
+    .mini {
+      font-size: 0.8rem;
+      margin-top: 6px;
+      color: var(--muted);
+    }
+
     @media (max-width: 920px) {
-      .hero, .grid { grid-template-columns: 1fr; }
+      .hero, .grid, .row, .row.three { grid-template-columns: 1fr; }
       .stats { grid-template-columns: 1fr; }
-      .gallery { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -231,75 +258,72 @@
     <section class="hero">
       <article class="panel">
         <div class="kicker">🩲 Self-Hosted AI Video Lab</div>
-        <h1>WedgieForge: generate a wedgie-themed clip site without big-tech model lock-in.</h1>
-        <p class="muted">This page outlines a fully local / self-controlled creative pipeline: prompt writing, model queueing, clip upscaling, and publishing. You keep your own GPUs, storage, moderation rules, and deployment keys.</p>
+        <h1>WedgieForge: generate wedgie-themed clips with a real model API and own the workflow.</h1>
+        <p class="muted">This is now wired for <strong>real generation</strong>: the UI sends prompt + settings to a video API endpoint, polls job status, and publishes playable video URLs when generation succeeds.</p>
         <div class="stats">
-          <div class="stat"><strong>100%</strong>Self-run stack</div>
-          <div class="stat"><strong>0</strong>Major AI API deps</div>
-          <div class="stat"><strong>24/7</strong>Auto publish mode</div>
+          <div class="stat"><strong>Live</strong>API request flow</div>
+          <div class="stat"><strong>Async</strong>Job polling loop</div>
+          <div class="stat"><strong>Playable</strong>Video outputs</div>
         </div>
       </article>
 
       <aside class="panel">
-        <h2>Open stack blueprint</h2>
+        <h2>Endpoint contract (default)</h2>
         <ul class="stack-list">
-          <li><span>ComfyUI + open video checkpoints</span><span class="badge">Generation</span></li>
-          <li><span>vLLM + prompt refiner model</span><span class="badge">Prompting</span></li>
-          <li><span>FFmpeg + RIFE interpolation</span><span class="badge">Post</span></li>
-          <li><span>FastAPI + Redis queue</span><span class="badge">Orchestration</span></li>
-          <li><span>Static CDN or PeerTube host</span><span class="badge">Publishing</span></li>
+          <li><span>POST /generate → { jobId }</span><span class="badge">Queue</span></li>
+          <li><span>GET /jobs/:id → status/resultUrl</span><span class="badge">Poll</span></li>
+          <li><span>Authorization: Bearer API_KEY</span><span class="badge">Auth</span></li>
+          <li><span>Payload includes prompt/model/fps/seconds</span><span class="badge">Input</span></li>
+          <li><span>Result card renders inline video player</span><span class="badge">Output</span></li>
         </ul>
       </aside>
     </section>
 
     <section class="grid">
       <article class="panel">
-        <h2>Clip generator control panel</h2>
-        <label for="prompt">Scene prompt</label>
-        <textarea id="prompt">Comedic gym locker room challenge, friends doing over-the-top wedgie dares, exaggerated cartoon vibe, energetic camera movement, no explicit nudity, 6 seconds.</textarea>
+        <h2>Real clip generator</h2>
 
-        <div class="row">
+        <label for="apiBase">API base URL</label>
+        <input id="apiBase" value="http://localhost:8000" placeholder="https://your-video-api.example" />
+
+        <label for="apiKey" style="margin-top:10px;">API key (optional)</label>
+        <input id="apiKey" type="password" placeholder="Bearer token" />
+
+        <label for="prompt" style="margin-top:10px;">Scene prompt</label>
+        <textarea id="prompt">Comedic gym locker room challenge, friends doing over-the-top hanging wedgie dares, exaggerated cartoon vibe, energetic camera movement, no explicit nudity, clearly consensual adults, 6 seconds.</textarea>
+
+        <div class="row three">
           <div>
             <label for="model">Model preset</label>
             <select id="model">
-              <option>OpenVid-XL (local checkpoint)</option>
-              <option>Mochi-1 community fine-tune</option>
-              <option>HunyuanVideo local build</option>
+              <option value="openvid-xl">OpenVid-XL (local checkpoint)</option>
+              <option value="mochi-community">Mochi-1 community fine-tune</option>
+              <option value="hunyuan-local">HunyuanVideo local build</option>
             </select>
           </div>
           <div>
             <label for="fps">Target FPS</label>
             <input id="fps" type="number" value="24" min="12" max="60" />
           </div>
+          <div>
+            <label for="duration">Seconds</label>
+            <input id="duration" type="number" value="6" min="2" max="12" />
+          </div>
         </div>
 
-        <button id="generateBtn">Queue local render job</button>
-        <p class="note" id="status">No jobs queued yet.</p>
+        <button id="generateBtn">Generate real video</button>
+        <p class="note" id="status">Ready. Configure your endpoint and generate.</p>
+        <p class="mini">Tip: if your backend uses different route names, adjust <code>submitGeneration</code> and <code>pollJob</code> in this file.</p>
       </article>
 
       <article class="panel">
-        <h2>Published clips</h2>
-        <div class="gallery" id="gallery">
-          <div class="card">
-            <div class="thumb">🎬</div>
-            <div class="card-body">
-              <p class="card-title">Hallway Hangtime Challenge</p>
-              <div class="card-meta">6.2s • 24fps • Local Model</div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="thumb">😂</div>
-            <div class="card-body">
-              <p class="card-title">Cafeteria Wedgie Sprint</p>
-              <div class="card-meta">5.8s • 30fps • Fine-tuned</div>
-            </div>
-          </div>
-        </div>
+        <h2>Generated clips</h2>
+        <div class="gallery" id="gallery"></div>
       </article>
     </section>
 
     <div class="policy">
-      Safety rule preset: keep outputs consensual/comedic, avoid explicit sexual content, and run your own moderation filter before auto-publishing.
+      Safety rule preset: keep outputs consensual/comedic, avoid explicit sexual content, and enforce age/consent moderation in your backend before publishing.
     </div>
   </main>
 
@@ -307,30 +331,150 @@
     const statusEl = document.getElementById('status');
     const galleryEl = document.getElementById('gallery');
     const generateBtn = document.getElementById('generateBtn');
+
+    const apiBaseEl = document.getElementById('apiBase');
+    const apiKeyEl = document.getElementById('apiKey');
+    const promptEl = document.getElementById('prompt');
     const modelEl = document.getElementById('model');
     const fpsEl = document.getElementById('fps');
+    const durationEl = document.getElementById('duration');
 
-    let jobNumber = 3;
+    let jobNumber = 0;
 
-    generateBtn.addEventListener('click', () => {
-      const model = modelEl.value;
-      const fps = Number(fpsEl.value) || 24;
-      jobNumber += 1;
+    function sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
 
-      statusEl.textContent = `Job #${jobNumber} queued on local worker node (${model}, ${fps}fps).`;
+    function setStatus(message, tone = 'warn') {
+      statusEl.className = `note ${tone}`;
+      statusEl.textContent = message;
+    }
 
+    function headers() {
+      const token = apiKeyEl.value.trim();
+      const baseHeaders = { 'Content-Type': 'application/json' };
+      if (token) {
+        baseHeaders.Authorization = `Bearer ${token}`;
+      }
+      return baseHeaders;
+    }
+
+    async function submitGeneration(payload) {
+      const base = apiBaseEl.value.trim().replace(/\/$/, '');
+      const response = await fetch(`${base}/generate`, {
+        method: 'POST',
+        headers: headers(),
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        const body = await response.text();
+        throw new Error(`submit failed (${response.status}): ${body || 'empty error body'}`);
+      }
+
+      return response.json();
+    }
+
+    async function pollJob(jobId, timeoutMs = 120000) {
+      const base = apiBaseEl.value.trim().replace(/\/$/, '');
+      const started = Date.now();
+
+      while (Date.now() - started < timeoutMs) {
+        const response = await fetch(`${base}/jobs/${encodeURIComponent(jobId)}`, {
+          method: 'GET',
+          headers: headers()
+        });
+
+        if (!response.ok) {
+          const body = await response.text();
+          throw new Error(`poll failed (${response.status}): ${body || 'empty error body'}`);
+        }
+
+        const data = await response.json();
+        const state = data.status || 'unknown';
+
+        if (state === 'completed' && data.resultUrl) {
+          return data;
+        }
+
+        if (state === 'failed') {
+          throw new Error(data.error || 'job failed without error message');
+        }
+
+        setStatus(`Job ${jobId} status: ${state}...`, 'warn');
+        await sleep(2000);
+      }
+
+      throw new Error('timed out waiting for job completion');
+    }
+
+    function renderCard({ title, model, fps, seconds, url }) {
       const card = document.createElement('div');
       card.className = 'card';
       card.innerHTML = `
-        <div class="thumb">🩲</div>
+        <video class="thumb" controls preload="metadata" src="${url}"></video>
         <div class="card-body">
-          <p class="card-title">Generated Clip #${jobNumber}</p>
-          <div class="card-meta">${(5 + Math.random() * 2).toFixed(1)}s • ${fps}fps • ${model}</div>
+          <p class="card-title">${title}</p>
+          <div class="card-meta">${seconds}s • ${fps}fps • ${model}</div>
         </div>
       `;
-
       galleryEl.prepend(card);
+    }
+
+    generateBtn.addEventListener('click', async () => {
+      const prompt = promptEl.value.trim();
+      const model = modelEl.value;
+      const fps = Number(fpsEl.value) || 24;
+      const seconds = Number(durationEl.value) || 6;
+
+      if (!prompt) {
+        setStatus('Prompt is required.', 'error');
+        return;
+      }
+
+      const payload = { prompt, model, fps, seconds };
+
+      generateBtn.disabled = true;
+      setStatus('Submitting generation job...', 'warn');
+
+      try {
+        const submission = await submitGeneration(payload);
+        const jobId = submission.jobId || submission.id;
+
+        if (!jobId) {
+          throw new Error('API did not return a jobId/id field');
+        }
+
+        setStatus(`Job ${jobId} submitted. Polling for output...`, 'warn');
+        const result = await pollJob(jobId);
+
+        jobNumber += 1;
+        const resultUrl = result.resultUrl || result.videoUrl;
+        renderCard({
+          title: `Generated Clip #${jobNumber}`,
+          model,
+          fps,
+          seconds,
+          url: resultUrl
+        });
+
+        setStatus(`Job ${jobId} complete. Video published in gallery.`, 'ok');
+      } catch (error) {
+        setStatus(`Generation error: ${error.message}`, 'error');
+      } finally {
+        generateBtn.disabled = false;
+      }
     });
+
+    galleryEl.innerHTML = `
+      <div class="card">
+        <div class="thumb-placeholder">🎬</div>
+        <div class="card-body">
+          <p class="card-title">No renders yet</p>
+          <div class="card-meta">Run a real generation job to populate this feed.</div>
+        </div>
+      </div>
+    `;
   </script>
 </body>
 </html>
