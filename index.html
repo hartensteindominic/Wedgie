@@ -3,385 +3,334 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wedgie Escape</title>
+  <title>WedgieForge AI Studio</title>
   <style>
     :root {
-      --bg: #121426;
-      --panel: #1d2140;
-      --accent: #ff4fa3;
-      --accent-2: #6cf0ff;
-      --text: #f4f6ff;
-      --danger: #ff6b6b;
-      --good: #68f29a;
+      --bg: #080a16;
+      --panel: #121734;
+      --panel-soft: #1a2148;
+      --line: rgba(255, 255, 255, 0.12);
+      --accent: #ff4aa5;
+      --accent-2: #51e8ff;
+      --text: #eff3ff;
+      --muted: #b0bdd9;
+      --ok: #6ef8a5;
+      --warn: #ffd36f;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top, #212850, var(--bg));
+      font-family: Inter, "Segoe UI", system-ui, sans-serif;
+      background: radial-gradient(circle at top, #1a2050 0%, var(--bg) 55%);
       color: var(--text);
-      padding: 24px;
+      line-height: 1.45;
     }
 
-    .game-shell {
-      width: min(920px, 100%);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
-      border: 1px solid rgba(255, 255, 255, 0.2);
+    .site {
+      width: min(1180px, 94vw);
+      margin: 0 auto;
+      padding: 24px 0 56px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .panel {
+      background: linear-gradient(170deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.01));
+      border: 1px solid var(--line);
       border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+      padding: 22px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
     }
 
-    .topbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.8rem, 2.7vw, 2.7rem);
+      line-height: 1.1;
+    }
+
+    .kicker {
+      display: inline-flex;
+      gap: 8px;
       align-items: center;
-      justify-content: space-between;
-      background: var(--panel);
-      padding: 16px 20px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(81, 232, 255, 0.14);
+      border: 1px solid rgba(81, 232, 255, 0.4);
+      color: var(--accent-2);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
     }
 
-    .title {
-      font-size: 1.4rem;
-      font-weight: 800;
-      letter-spacing: 0.4px;
-    }
+    .muted { color: var(--muted); }
 
     .stats {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 10px;
+      margin-top: 16px;
     }
 
     .stat {
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.1);
-      font-size: 0.95rem;
+      background: var(--panel-soft);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
     }
 
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
+    .stat strong {
+      display: block;
+      font-size: 1.25rem;
+      color: var(--accent-2);
+    }
+
+    .stack-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
       gap: 10px;
-      align-items: center;
-      padding: 12px 20px;
-      background: rgba(0, 0, 0, 0.18);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      font-size: 0.9rem;
+    }
+
+    .stack-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      background: var(--panel-soft);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 0.94rem;
+    }
+
+    .badge {
+      font-size: 0.78rem;
+      color: #04101f;
+      background: linear-gradient(120deg, var(--accent-2), #99f5ff);
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-weight: 700;
+      height: fit-content;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #dce5ff;
+    }
+
+    textarea, select, input {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 10px;
+      background: #0b1130;
+      color: var(--text);
+      padding: 10px 12px;
+      font: inherit;
+    }
+
+    textarea { min-height: 120px; resize: vertical; }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
     }
 
     button {
+      margin-top: 14px;
       border: none;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: 700;
-      color: #111;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-weight: 800;
+      color: #051120;
       background: linear-gradient(120deg, var(--accent-2), var(--accent));
       cursor: pointer;
-      transition: transform 0.15s ease;
     }
 
-    button:hover {
-      transform: translateY(-1px);
+    .note {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: var(--muted);
     }
 
-    canvas {
-      display: block;
-      width: 100%;
-      height: auto;
-      background:
-        linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-        #131936;
-      background-size: 28px 28px, 28px 28px, auto;
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 10px;
     }
 
-    .footer {
-      padding: 12px 20px 18px;
+    .card {
+      background: #0d1438;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .thumb {
+      aspect-ratio: 16 / 9;
+      display: grid;
+      place-items: center;
+      font-size: 2.2rem;
+      background: linear-gradient(150deg, #273383, #832f73);
+    }
+
+    .card-body {
+      padding: 10px;
+    }
+
+    .card-title {
+      margin: 0;
       font-size: 0.95rem;
-      color: rgba(255, 255, 255, 0.9);
+      font-weight: 700;
     }
 
-    .hint {
-      color: var(--accent-2);
-      font-weight: 700;
+    .card-meta {
+      margin-top: 6px;
+      font-size: 0.83rem;
+      color: var(--muted);
+    }
+
+    .policy {
+      margin-top: 18px;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 211, 111, 0.35);
+      background: rgba(255, 211, 111, 0.1);
+      color: #fff0c9;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 920px) {
+      .hero, .grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr; }
+      .gallery { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <section class="game-shell">
-    <div class="topbar">
-      <div class="title">🩲 Wedgie Escape</div>
-      <div class="stats">
-        <div class="stat">Score: <strong id="score">0</strong></div>
-        <div class="stat">Lives: <strong id="lives">3</strong></div>
-        <div class="stat">Level: <strong id="level">1</strong></div>
-      </div>
+  <main class="site">
+    <section class="hero">
+      <article class="panel">
+        <div class="kicker">🩲 Self-Hosted AI Video Lab</div>
+        <h1>WedgieForge: generate a wedgie-themed clip site without big-tech model lock-in.</h1>
+        <p class="muted">This page outlines a fully local / self-controlled creative pipeline: prompt writing, model queueing, clip upscaling, and publishing. You keep your own GPUs, storage, moderation rules, and deployment keys.</p>
+        <div class="stats">
+          <div class="stat"><strong>100%</strong>Self-run stack</div>
+          <div class="stat"><strong>0</strong>Major AI API deps</div>
+          <div class="stat"><strong>24/7</strong>Auto publish mode</div>
+        </div>
+      </article>
+
+      <aside class="panel">
+        <h2>Open stack blueprint</h2>
+        <ul class="stack-list">
+          <li><span>ComfyUI + open video checkpoints</span><span class="badge">Generation</span></li>
+          <li><span>vLLM + prompt refiner model</span><span class="badge">Prompting</span></li>
+          <li><span>FFmpeg + RIFE interpolation</span><span class="badge">Post</span></li>
+          <li><span>FastAPI + Redis queue</span><span class="badge">Orchestration</span></li>
+          <li><span>Static CDN or PeerTube host</span><span class="badge">Publishing</span></li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="grid">
+      <article class="panel">
+        <h2>Clip generator control panel</h2>
+        <label for="prompt">Scene prompt</label>
+        <textarea id="prompt">Comedic gym locker room challenge, friends doing over-the-top wedgie dares, exaggerated cartoon vibe, energetic camera movement, no explicit nudity, 6 seconds.</textarea>
+
+        <div class="row">
+          <div>
+            <label for="model">Model preset</label>
+            <select id="model">
+              <option>OpenVid-XL (local checkpoint)</option>
+              <option>Mochi-1 community fine-tune</option>
+              <option>HunyuanVideo local build</option>
+            </select>
+          </div>
+          <div>
+            <label for="fps">Target FPS</label>
+            <input id="fps" type="number" value="24" min="12" max="60" />
+          </div>
+        </div>
+
+        <button id="generateBtn">Queue local render job</button>
+        <p class="note" id="status">No jobs queued yet.</p>
+      </article>
+
+      <article class="panel">
+        <h2>Published clips</h2>
+        <div class="gallery" id="gallery">
+          <div class="card">
+            <div class="thumb">🎬</div>
+            <div class="card-body">
+              <p class="card-title">Hallway Hangtime Challenge</p>
+              <div class="card-meta">6.2s • 24fps • Local Model</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="thumb">😂</div>
+            <div class="card-body">
+              <p class="card-title">Cafeteria Wedgie Sprint</p>
+              <div class="card-meta">5.8s • 30fps • Fine-tuned</div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <div class="policy">
+      Safety rule preset: keep outputs consensual/comedic, avoid explicit sexual content, and run your own moderation filter before auto-publishing.
     </div>
-
-    <div class="controls">
-      <button id="startBtn">Start / Restart</button>
-      <span>Move with <span class="hint">← →</span> or <span class="hint">A D</span>. Catch ⭐ snacks, dodge 🩲 wedgies.</span>
-    </div>
-
-    <canvas id="game" width="900" height="520" aria-label="Wedgie Escape game area"></canvas>
-
-    <div class="footer" id="status">Press <strong>Start</strong> to begin your escape run!</div>
-  </section>
+  </main>
 
   <script>
-    const canvas = document.getElementById('game');
-    const ctx = canvas.getContext('2d');
-
-    const scoreEl = document.getElementById('score');
-    const livesEl = document.getElementById('lives');
-    const levelEl = document.getElementById('level');
     const statusEl = document.getElementById('status');
-    const startBtn = document.getElementById('startBtn');
+    const galleryEl = document.getElementById('gallery');
+    const generateBtn = document.getElementById('generateBtn');
+    const modelEl = document.getElementById('model');
+    const fpsEl = document.getElementById('fps');
 
-    const state = {
-      running: false,
-      score: 0,
-      lives: 3,
-      level: 1,
-      time: 0,
-      keys: new Set(),
-      player: { x: canvas.width / 2 - 25, y: canvas.height - 70, w: 50, h: 40, speed: 420 },
-      hazards: [],
-      pickups: [],
-      hazardSpawnTimer: 0,
-      pickupSpawnTimer: 0,
-      levelTimer: 0,
-      lastFrame: 0
-    };
+    let jobNumber = 3;
 
-    function resetGame() {
-      state.running = true;
-      state.score = 0;
-      state.lives = 3;
-      state.level = 1;
-      state.time = 0;
-      state.keys.clear();
-      state.player.x = canvas.width / 2 - state.player.w / 2;
-      state.hazards = [];
-      state.pickups = [];
-      state.hazardSpawnTimer = 0;
-      state.pickupSpawnTimer = 0;
-      state.levelTimer = 0;
-      state.lastFrame = performance.now();
-      updateUI();
-      statusEl.textContent = 'Run! Keep your cool and avoid airborne wedgies!';
-      requestAnimationFrame(gameLoop);
-    }
+    generateBtn.addEventListener('click', () => {
+      const model = modelEl.value;
+      const fps = Number(fpsEl.value) || 24;
+      jobNumber += 1;
 
-    function updateUI() {
-      scoreEl.textContent = state.score;
-      livesEl.textContent = state.lives;
-      levelEl.textContent = state.level;
-    }
+      statusEl.textContent = `Job #${jobNumber} queued on local worker node (${model}, ${fps}fps).`;
 
-    function randomX(width) {
-      return Math.random() * (canvas.width - width);
-    }
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="thumb">🩲</div>
+        <div class="card-body">
+          <p class="card-title">Generated Clip #${jobNumber}</p>
+          <div class="card-meta">${(5 + Math.random() * 2).toFixed(1)}s • ${fps}fps • ${model}</div>
+        </div>
+      `;
 
-    function spawnHazard() {
-      const size = 34 + Math.random() * 24;
-      state.hazards.push({
-        x: randomX(size),
-        y: -size,
-        w: size,
-        h: size,
-        speed: 130 + state.level * 38 + Math.random() * 90,
-        rotation: Math.random() * Math.PI * 2,
-        spin: (Math.random() - 0.5) * 2.4
-      });
-    }
-
-    function spawnPickup() {
-      const size = 22;
-      state.pickups.push({
-        x: randomX(size),
-        y: -size,
-        w: size,
-        h: size,
-        speed: 140 + Math.random() * 65,
-        bob: Math.random() * Math.PI * 2
-      });
-    }
-
-    function rectOverlap(a, b) {
-      return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
-    }
-
-    function drawPlayer() {
-      const p = state.player;
-      ctx.save();
-      ctx.translate(p.x + p.w / 2, p.y + p.h / 2);
-      ctx.fillStyle = '#ffe9c9';
-      ctx.fillRect(-18, -12, 36, 26);
-      ctx.beginPath();
-      ctx.arc(0, -26, 14, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = '#25203f';
-      ctx.fillRect(-20, 10, 40, 18);
-      ctx.fillStyle = '#6cf0ff';
-      ctx.fillRect(-18, 10, 36, 10);
-      ctx.restore();
-    }
-
-    function drawHazard(h) {
-      ctx.save();
-      ctx.translate(h.x + h.w / 2, h.y + h.h / 2);
-      ctx.rotate(h.rotation);
-      ctx.font = `${Math.floor(h.w)}px serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('🩲', 0, 0);
-      ctx.restore();
-    }
-
-    function drawPickup(p) {
-      ctx.save();
-      ctx.translate(p.x + p.w / 2, p.y + p.h / 2 + Math.sin(p.bob) * 4);
-      ctx.font = `${Math.floor(p.w)}px serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('⭐', 0, 0);
-      ctx.restore();
-    }
-
-    function drawHud() {
-      if (!state.running && state.lives <= 0) {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.55)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#fff';
-        ctx.textAlign = 'center';
-        ctx.font = 'bold 52px Trebuchet MS';
-        ctx.fillText('Game Over!', canvas.width / 2, canvas.height / 2 - 20);
-        ctx.font = '28px Trebuchet MS';
-        ctx.fillText(`Final Score: ${state.score}`, canvas.width / 2, canvas.height / 2 + 28);
-      }
-    }
-
-    function update(dt) {
-      const p = state.player;
-      if (state.keys.has('ArrowLeft') || state.keys.has('a') || state.keys.has('A')) {
-        p.x -= p.speed * dt;
-      }
-      if (state.keys.has('ArrowRight') || state.keys.has('d') || state.keys.has('D')) {
-        p.x += p.speed * dt;
-      }
-      p.x = Math.max(0, Math.min(canvas.width - p.w, p.x));
-
-      state.hazardSpawnTimer += dt;
-      state.pickupSpawnTimer += dt;
-      state.levelTimer += dt;
-
-      const hazardInterval = Math.max(0.18, 0.9 - state.level * 0.06);
-      const pickupInterval = 1.2;
-
-      if (state.hazardSpawnTimer > hazardInterval) {
-        spawnHazard();
-        state.hazardSpawnTimer = 0;
-      }
-
-      if (state.pickupSpawnTimer > pickupInterval) {
-        spawnPickup();
-        state.pickupSpawnTimer = 0;
-      }
-
-      for (const h of state.hazards) {
-        h.y += h.speed * dt;
-        h.rotation += h.spin * dt;
-      }
-
-      for (const item of state.pickups) {
-        item.y += item.speed * dt;
-        item.bob += 5 * dt;
-      }
-
-      state.hazards = state.hazards.filter((h) => {
-        if (rectOverlap(state.player, h)) {
-          state.lives -= 1;
-          updateUI();
-          statusEl.textContent = state.lives > 0
-            ? 'Ouch! That one got you. Keep moving!'
-            : 'Wedgie wipeout! Tap Start to try again.';
-          return false;
-        }
-        return h.y < canvas.height + h.h;
-      });
-
-      state.pickups = state.pickups.filter((item) => {
-        if (rectOverlap(state.player, item)) {
-          state.score += 15;
-          updateUI();
-          return false;
-        }
-        return item.y < canvas.height + item.h;
-      });
-
-      state.score += dt * 4;
-
-      if (state.levelTimer > 12) {
-        state.level += 1;
-        state.levelTimer = 0;
-        statusEl.textContent = `Level ${state.level}! Things are getting chaotic.`;
-        updateUI();
-      }
-
-      if (state.lives <= 0) {
-        state.running = false;
-      }
-    }
-
-    function render() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      for (const h of state.hazards) {
-        drawHazard(h);
-      }
-      for (const item of state.pickups) {
-        drawPickup(item);
-      }
-      drawPlayer();
-      drawHud();
-    }
-
-    function gameLoop(now) {
-      const dt = Math.min((now - state.lastFrame) / 1000, 0.033);
-      state.lastFrame = now;
-
-      if (state.running) {
-        update(dt);
-        render();
-        requestAnimationFrame(gameLoop);
-      } else {
-        render();
-      }
-    }
-
-    window.addEventListener('keydown', (e) => {
-      state.keys.add(e.key);
+      galleryEl.prepend(card);
     });
-
-    window.addEventListener('keyup', (e) => {
-      state.keys.delete(e.key);
-    });
-
-    startBtn.addEventListener('click', resetGame);
-
-    render();
   </script>
 </body>
 </html>
